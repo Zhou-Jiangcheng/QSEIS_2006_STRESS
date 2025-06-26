@@ -38,7 +38,7 @@ Notes to the co-ordinate convention used in QSEIS:
 
 (3) All Green's functions as outputs of QSEIS are given by their ZRT components in the cylindrical co-ordinate system for a unit source. To consider the effect of radiation pattern, you need to multiply each Green's function output with an azimuth factor, which is given in the documentation of example input file.
 
-(4) The final results for your application are then obtained by convoluting your source components with the coreesponding Green's functions.
+(4) The final results for your application are then obtained by convoluting your source components with the corresponding Green's functions.
 
 References
 

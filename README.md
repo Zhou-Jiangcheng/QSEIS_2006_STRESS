@@ -30,6 +30,16 @@ to get the excutable code qseis2006.
 
 After start the executable code, the program ask for an input file in the ASCII format. An example input file is provided under folder "InputFile". You may change the input data included in this file for your own applications.
 
+Notes to the co-ordinate convention used in QSEIS:
+
+(1) Define a local Cartesian co-ordinate system using Aki's convention, that is, x = northward, y = eastward and z = downward. The corresponding local cylindrical co-ordinate system has the same x axis and the azimuth (theta) increasing from north to east as commonly used in seismology.
+
+(2) Decompose your moment tensor or single force to their components in the local Cartesian co-ordinate system.
+
+(3) All Green's functions as outputs of QSEIS are given by their ZRT components in the cylindrical co-ordinate system for a unit source. To consider the effect of radiation pattern, you need to multiply each Green's function output with an azimuth factor, which is given in the documentation of example input file.
+
+(4) The final results for your application are then obtained by convoluting your source components with the coreesponding Green's functions.
+
 References
 
 Wang, R., (1999), A simple orthonormalization method for stable and efficient computation of Green's functions, Bulletin of the Seismological Society of America, 89(3), 733-741.

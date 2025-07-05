@@ -45,7 +45,7 @@ c
       if(kmordeg.eq.1)then
         dm=km2m
       else
-        dm=rr0*pi/180.d0
+        dm=(rr0-zr)*pi/180.d0
       endif
       if(ieqdis.eq.1.and.nr.gt.1)then
         read(unit,*)r1,r2

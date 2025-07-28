@@ -1,12 +1,12 @@
       subroutine qssource(ros,vps,vss)
       implicit none
 c
-      double precision ros,vps,vss
+      real*8 ros,vps,vss
 c
       include 'qsglobal.h'
 c
-      integer i,istp
-      double precision pi,pi2
+      integer*4 i,istp
+      real*8 pi,pi2
 c
       do istp=1,6
         do i=1,6

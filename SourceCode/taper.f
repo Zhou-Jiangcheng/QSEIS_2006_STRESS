@@ -1,8 +1,8 @@
-      double precision function taper(k,kcut1,kcut2,kcut3,kcut4)
+      real*8 function taper(k,kcut1,kcut2,kcut3,kcut4)
       implicit none
 c
-      double precision k,kcut1,kcut2,kcut3,kcut4
-      double precision pid2
+      real*8 k,kcut1,kcut2,kcut3,kcut4
+      real*8 pid2
 c
       pid2=2.d0*datan(1.d0)
       if(k.gt.kcut1.and.k.lt.kcut2)then

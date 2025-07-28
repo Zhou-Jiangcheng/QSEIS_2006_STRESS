@@ -1,13 +1,13 @@
       subroutine qsbsj(dk,nk)
       implicit none
-      integer nk
-      double precision dk
+      integer*4 nk
+      real*8 dk
 c
       include 'qsglobal.h'
 c
-      integer i,ir,ik
-      double precision k,x
-      double precision bessj0,bessj1,bessj
+      integer*4 i,ir,ik
+      real*8 k,x
+      real*8 bessj0,bessj1,bessj
 c
       do ik=1,nk
         k=dble(ik)*dk

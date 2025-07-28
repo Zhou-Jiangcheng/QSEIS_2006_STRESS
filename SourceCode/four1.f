@@ -1,22 +1,22 @@
       subroutine four1(data,nn,isign)
       implicit none
-      integer nn,isign
-      double precision data(2*nn)
+      integer*4 nn,isign
+      real*8 data(2*nn)
 c
 c     fast fourier transform (fft)
 c     convention: f(t)=\int F(f)e^{-i2\pi ft} df 
 c     replace data by its discrete fourier transform, if isign is input
 c     as 1; or replace data by nn times its inverse discrete fourier
-c     transform, if isign is input as -1. data is a double complex array of
-c     length nn or, equivalently, a double precision array of length 2*nn.
-c     nn must be an integer power of 2 (this is not checked!)
+c     transform, if isign is input as -1. data is a complex*16 array of
+c     length nn or, equivalently, a real*8 array of length 2*nn.
+c     nn must be an integer*4 power of 2 (this is not checked!)
 c
 c     note for convention: f(t)=\int F(f)e^{i2\pi f t} df, t-domain ==>
 c     f-domain, if isign=-1, and f-domain ==> t-domain, if isign=1.
 c
-      integer i,j,n,m,mmax,istep
-      double precision tempr,tempi
-      double precision wr,wi,wpr,wpi,wtemp,theta
+      integer*4 i,j,n,m,mmax,istep
+      real*8 tempr,tempi
+      real*8 wr,wi,wpr,wpi,wtemp,theta
       n=2*nn
       j=1
       do i=1,n,2

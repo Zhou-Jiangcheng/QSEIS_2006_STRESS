@@ -1,19 +1,19 @@
       subroutine qsfftinv(icmp,istp)
       implicit none
 c
-      integer icmp,istp
+      integer*4 icmp,istp
 c
       include 'qsglobal.h'
 c
-      integer nn,nn2,nch,nch2
+      integer*4 nn,nn2,nch,nch2
       parameter (nn=2*nfmax,nn2=nfmax,nch=2*nrmax,nch2=nrmax)
-      integer lf,mf,ir,j,it
-      double precision t,pi,pi2,slw0,omi
-      double precision f(nn),y0(nch),y(nch)
-      double complex s
-      double complex cy(nn,nch2)
+      integer*4 lf,mf,ir,j,it
+      real*8 t,pi,pi2,slw0,omi
+      real*8 f(nn),y0(nch),y(nch)
+      complex*16 s
+      complex*16 cy(nn,nch2)
 c
-      double complex wvf(nn2)
+      complex*16 wvf(nn2)
       save wvf
 c
       pi=4.d0*datan(1.d0)

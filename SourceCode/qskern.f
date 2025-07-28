@@ -7,12 +7,12 @@ c     k: wave number
 c     f: frequency. 2*pi*f = cyclar frequency
 c     fi: imaginary part of the frequency
 c
-      double precision f,k
-      double complex y(6,6)
+      real*8 f,k
+      complex*16 y(6,6)
 c
       include 'qsglobal.h'
 c
-      integer i,istp,lup,llw
+      integer*4 i,istp,lup,llw
 c
       call qswaveno(f,k)
 c

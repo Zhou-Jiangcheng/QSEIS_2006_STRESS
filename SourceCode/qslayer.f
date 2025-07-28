@@ -1,12 +1,12 @@
       subroutine qslayer(ierr)
       implicit none
-      integer ierr
+      integer*4 ierr
 c
       include 'qsglobal.h'
 c
-      integer l,n,li,lp0
-      double precision zswap
-      double precision z(nzmax),z0(nzmax)
+      integer*4 l,n,li,lp0
+      real*8 zswap
+      real*8 z(nzmax),z0(nzmax)
 c
       lp0=1
       z0(lp0)=0.d0

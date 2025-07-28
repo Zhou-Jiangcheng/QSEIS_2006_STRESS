@@ -1,12 +1,12 @@
-      double precision function bessj1(x)
+      real*8 function bessj1(x)
       implicit none
 c
 c     J_1(x)
 c
-      double precision x,ax,x1,x2,theta,fct
-      double precision a0,a1,a2,a3,a4,a5,a6
-      double precision b0,b1,b2,b3,b4,b5,b6
-      double precision c0,c1,c2,c3,c4,c5,c6
+      real*8 x,ax,x1,x2,theta,fct
+      real*8 a0,a1,a2,a3,a4,a5,a6
+      real*8 b0,b1,b2,b3,b4,b5,b6
+      real*8 c0,c1,c2,c3,c4,c5,c6
 c
       data a0,a1,a2,a3,a4,a5,a6/  0.50000000d0,
      + -0.56249985d0, 0.21093573d0,-0.03954289d0,

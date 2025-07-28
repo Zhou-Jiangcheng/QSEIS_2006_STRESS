@@ -1,23 +1,23 @@
       subroutine qsgetinp(unit,srate,nssel)
       implicit none
-      integer unit,nssel
-      double precision srate
+      integer*4 unit,nssel
+      real*8 srate
 c
       include 'qsglobal.h'
 c
 c     work space
 c
-      integer i,ir,istp,j,l,l1,lrs,lcut,n,ierr,iazi
-      integer irlast,irnow,is,ns
-      integer ieqdis,kmordeg,iv0,flen0,nup,nlw
-      double precision rr,z,pi,taunorm,rnow,rlast,tnow,tlast
-      double precision v00,depth,hpmin,vsliquid
-      double precision s1,s2,s,ds,smin,shead,twinmin
-      double precision r1,r2,dr,dm,t1,rdis
-      double precision mis,mcl,mdc,st,di,ra,deg2rad
-      double precision suppress,ros,vps,vss,fcut
-      double precision rot(3,3),sm(3,3),swap(3,3)
-      double precision resolut(3),t0(nrmax)
+      integer*4 i,ir,istp,j,l,l1,lrs,lcut,n,ierr,iazi
+      integer*4 irlast,irnow,is,ns
+      integer*4 ieqdis,kmordeg,iv0,flen0,nup,nlw
+      real*8 rr,z,pi,taunorm,rnow,rlast,tnow,tlast
+      real*8 v00,depth,hpmin,vsliquid
+      real*8 s1,s2,s,ds,smin,shead,twinmin
+      real*8 r1,r2,dr,dm,t1,rdis
+      real*8 mis,mcl,mdc,st,di,ra,deg2rad
+      real*8 suppress,ros,vps,vss,fcut
+      real*8 rot(3,3),sm(3,3),swap(3,3)
+      real*8 resolut(3),t0(nrmax)
       character*80 outfile0(7),comments*180
 c
 c     source parameters

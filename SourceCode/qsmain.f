@@ -5,10 +5,10 @@ c
 c
 c     work space
 c
-      integer i,istp,nssel,runtime
-      double precision pi,srate
-      logical grnexist
-      integer time
+      integer*4 i,istp,nssel,runtime
+      real*8 pi,srate
+      logical*2 grnexist
+      integer*4 time
 c
 c     read input file file
 c

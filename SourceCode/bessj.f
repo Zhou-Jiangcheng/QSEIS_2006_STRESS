@@ -1,15 +1,15 @@
-      double precision function bessj(n,x)
+      real*8 function bessj(n,x)
       implicit none
-      integer n
-      double precision x
+      integer*4 n
+      real*8 x
 c
-      integer iacc
+      integer*4 iacc
       parameter(iacc=40)
-      double precision bigno,bigni
+      real*8 bigno,bigni
       parameter(bigno=1.d+10,bigni=1.d-10)
 c
-      integer j,jsum,m
-      double precision ax,bj,bjm,bjp,sum,tox,bessj0,bessj1
+      integer*4 j,jsum,m
+      real*8 ax,bj,bjm,bjp,sum,tox,bessj0,bessj1
       if(n.lt.2)pause 'bad argument n in bessj'
       ax=dabs(x)
       if(ax.eq.0.d0)then

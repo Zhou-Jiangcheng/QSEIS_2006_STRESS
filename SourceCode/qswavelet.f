@@ -1,15 +1,15 @@
       subroutine qswavelet(wvf,mm2)
       implicit none
-      integer mm2
-      double complex wvf(mm2)
+      integer*4 mm2
+      complex*16 wvf(mm2)
 c
       include 'qsglobal.h'
 c
-      integer l,n
-      double precision f,omi,x,dt0
-      double complex alfa,beta,gamma,eta
+      integer*4 l,n
+      real*8 f,omi,x,dt0
+      complex*16 alfa,beta,gamma,eta
 c
-      double precision pi,pi2,eps
+      real*8 pi,pi2,eps
       data pi,pi2,eps/3.14159265358979d0,6.28318530717959d0,1.0d-04/
 c
       if(wdeg.ne.0)then

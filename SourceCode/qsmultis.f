@@ -1,6 +1,6 @@
       subroutine qsmultis(grnexist)
       implicit none
-      logical grnexist
+      logical*2 grnexist
       include 'qsglobal.h'
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c     this program calculates convolution integral (summation)         c
@@ -28,13 +28,13 @@ c     cylindrical (z,r,t) with z = downward,                           c
 c                t = azmuth angle from north;                          c
 c                                                                      c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      integer ir,lf,icmp,istp,unit
-      double precision az1,az2
-      double precision weight(0:5)
-      double precision t(2*nfmax),y1(nrmax),y2(nrmax)
+      integer*4 ir,lf,icmp,istp,unit
+      real*8 az1,az2
+      real*8 weight(0:5)
+      real*8 t(2*nfmax),y1(nrmax),y2(nrmax)
       character*80 textline
 c
-      double precision deg2rad
+      real*8 deg2rad
       data deg2rad/1.745329251994328d-02/
 c
       if(grnexist)then

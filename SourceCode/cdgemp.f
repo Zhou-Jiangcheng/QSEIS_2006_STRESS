@@ -10,13 +10,13 @@ c     key: if the main term of a column is                                     i
 c          smaller than eps, key=0: anormal return,                            i
 c          else key=1: normal return.                                          i
 c-------------------------------------------------------------------------------
-      integer n,n1,key
-      double precision eps
-      double complex a(n,n),b(n,n1)
+      integer*4 n,n1,key
+      real*8 eps
+      complex*16 a(n,n),b(n,n1)
 c
-      integer i,j,k,l,m
-      double precision p
-      double complex q
+      integer*4 i,j,k,l,m
+      real*8 p
+      complex*16 q
 c
       do m=1,n
         p=0.d0

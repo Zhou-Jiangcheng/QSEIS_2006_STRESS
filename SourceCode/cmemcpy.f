@@ -3,10 +3,10 @@
 c
 c     copy complex array a to b
 c
-      integer n
-      double complex a(n),b(n)
+      integer*4 n
+      complex*16 a(n),b(n)
 c
-      integer i
+      integer*4 i
 c
       do i=1,n
         b(i)=a(i)

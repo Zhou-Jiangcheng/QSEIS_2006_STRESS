@@ -5,20 +5,20 @@ c     calculation of response to sh source
 c     y(6,6): solution vector (complex)
 c     k: wave number
 c
-      integer lup,llw
-      double precision k
-      double complex y(6,6)
+      integer*4 lup,llw
+      real*8 k
+      complex*16 y(6,6)
 c
       include 'qsglobal.h'
 c
 c     work space
 c
-      integer i,istp,l,n,key
-      double complex cnorm
-      double complex y0(2),b(2,6),b0(2,6)
-      double complex y1(2),yup(2),ylw(2)
-      double complex hk(2,2,nzmax),coef(2,2),cinc(6),c0
-      logical rsite
+      integer*4 i,istp,l,n,key
+      complex*16 cnorm
+      complex*16 y0(2),b(2,6),b0(2,6)
+      complex*16 y1(2),yup(2),ylw(2)
+      complex*16 hk(2,2,nzmax),coef(2,2),cinc(6),c0
+      logical*2 rsite
 c
 c===============================================================================
 c

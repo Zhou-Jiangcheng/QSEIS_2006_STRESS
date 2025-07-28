@@ -5,14 +5,14 @@ c     calculate q based on the constant q model
 c
 c     f = frequency
 c
-      double precision f
+      real*8 f
 c
       include 'qsglobal.h'
 c
-      integer n
-      double complex cmp,cms
+      integer*4 n
+      complex*16 cmp,cms
 c
-      double precision pi2
+      real*8 pi2
       data pi2/6.28318530717959d0/
 c
       comega=dcmplx(pi2*f,pi2*fi)

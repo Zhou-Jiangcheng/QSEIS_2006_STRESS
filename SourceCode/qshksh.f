@@ -1,14 +1,14 @@
       subroutine qshksh(hk,z,n,rsite)
       implicit none
 c
-      integer n
-      double precision z
-      double complex hk(2,2)
-      logical rsite
+      integer*4 n
+      real*8 z
+      complex*16 hk(2,2)
+      logical*2 rsite
 c
       include 'qsglobal.h'
 c
-      double complex cx,cem,cch,csh
+      complex*16 cx,cem,cch,csh
 c
       if(rsite)then
         cx=ksrs(n)*dcmplx(2.d0*z,0.d0)

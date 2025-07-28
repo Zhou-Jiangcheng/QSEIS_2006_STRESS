@@ -1,14 +1,14 @@
       subroutine qssublay(resolut,fcut)
       implicit none
 c
-      double precision resolut(3),fcut
+      real*8 resolut(3),fcut
 c
       include 'qsglobal.h'
 c
 c     work space
 c
-      integer i,i0,l,ivp,ivs,iro
-      double precision dh,dro,dvp,dvs,dqp,dqs,z,dz,halfwvlen
+      integer*4 i,i0,l,ivp,ivs,iro
+      real*8 dh,dro,dvp,dvs,dqp,dqs,z,dz,halfwvlen
 c
       n0=0
       do l=1,l0-1

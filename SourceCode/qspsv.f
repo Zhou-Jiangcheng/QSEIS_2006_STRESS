@@ -5,24 +5,24 @@ c     calculation of response to p-sv source
 c     y(6,6): solution vector (complex)
 c     k: wave number
 c
-      integer lup,llw
-      double precision k
-      double complex y(6,6)
+      integer*4 lup,llw
+      real*8 k
+      complex*16 y(6,6)
 c
       include 'qsglobal.h'
 c
 c     work space
 c
-      integer i,istp,j,l,n,key
-      double complex cfac,ck,ch0,pwave,swave
-      double complex y0(4,2),c0(4,2),c1(4,2),b(4,6),b0(4,6)
-      double complex cinc(4,6)
-      double complex y1(4,2),yup(4,2),ylw(4,2),orth(2,2)
-      double complex coef(4,4),cnorm(2),coefrs(2,2),brs(2,6)
-      logical rsite
-      logical dynamic(nzmax)
+      integer*4 i,istp,j,l,n,key
+      complex*16 cfac,ck,ch0,pwave,swave
+      complex*16 y0(4,2),c0(4,2),c1(4,2),b(4,6),b0(4,6)
+      complex*16 cinc(4,6)
+      complex*16 y1(4,2),yup(4,2),ylw(4,2),orth(2,2)
+      complex*16 coef(4,4),cnorm(2),coefrs(2,2),brs(2,6)
+      logical*2 rsite
+      logical*2 dynamic(nzmax)
 c
-      double complex c2
+      complex*16 c2
 	data c2/(2.d0,0.d0)/
 c
       ck=dcmplx(k,0.d0)

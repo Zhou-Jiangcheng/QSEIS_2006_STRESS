@@ -1,12 +1,12 @@
       subroutine qswaveno(f,k)
       implicit none
 c
-      double precision f,k
+      real*8 f,k
 c
       include 'qsglobal.h'
 c
-      integer n
-      double complex ck,ck2
+      integer*4 n
+      complex*16 ck,ck2
 c
       ck=dcmplx(k,0.d0)
       ck2=dcmplx(k*k,0.d0)

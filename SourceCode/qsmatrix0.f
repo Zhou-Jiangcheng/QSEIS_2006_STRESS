@@ -1,19 +1,19 @@
       subroutine qsmatrix0(a,ck,z,n)
       implicit none
 c
-      integer n
-      double precision z
-      double complex ck
-      double complex a(4,4)
+      integer*4 n
+      real*8 z
+      complex*16 ck
+      complex*16 a(4,4)
 c
       include 'qsglobal.h'
 c
-      double complex c0,c1,c2
+      complex*16 c0,c1,c2
       data c0,c1,c2/(0.d0,0.d0),(1.d0,0.d0),(2.d0,0.d0)/
 c
-      integer i
-      double complex ck2,cz,cxi,cfac,b(4,4)
-      double complex cxps,cdkp,cdks,cps,csp,cdeps,cdesp
+      integer*4 i
+      complex*16 ck2,cz,cxi,cfac,b(4,4)
+      complex*16 cxps,cdkp,cdks,cps,csp,cdeps,cdesp
 c
       ck2=ck*ck
 c

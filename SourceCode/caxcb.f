@@ -3,10 +3,10 @@
 c
 c     calculate c=a*b
 c
-      integer n,l,m
-      double complex a(n,l),b(l,m),c(n,m)
+      integer*4 n,l,m
+      complex*16 a(n,l),b(l,m),c(n,m)
 c
-      integer i,j,k
+      integer*4 i,j,k
 c
       do j=1,m
         do i=1,n

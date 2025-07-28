@@ -109,7 +109,7 @@ c
         endif
         kcut1(1)=0.d0
         kcut1(2)=0.d0
-        kcut1(3)=0.d0
+        kcut1(3)=0.8d0*k
         kcut1(4)=k
 c
         f=fcut
@@ -134,7 +134,7 @@ c
 c
         kcut2(1)=0.d0
         kcut2(2)=0.d0
-        kcut2(3)=dmin1(k,1.5d0*pi2*fcut/cmax)
+        kcut2(3)=0.8d0*k
         kcut2(4)=k
         lf1=1
       else

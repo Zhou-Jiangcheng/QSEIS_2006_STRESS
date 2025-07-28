@@ -113,6 +113,7 @@ c
         kcut1(4)=k
 c
         f=fcut
+        n=nno(ls)
         wvlen=vp(n)/(f+df)
         rdisk(1)=rd2r*dmin1(dsqrt(zdis*zdis+r(1)*r(1)),wvlen)
         ik2=ik1

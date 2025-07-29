@@ -1,6 +1,8 @@
-FORTRAN code for calculating synthetic seismograms based on a layered viscoelastic half-space earth model.
+FORTRAN code for calculating synthetic seismograms based on a layered elastic half-space earth model.
 
 Last update by Rongjiang Wang: Berlin, 28. July 2025
+
+Modified by Zhou Jiangcheng: Beijing, 29. July 2025
 
 Highlights:
 
@@ -22,11 +24,9 @@ MSEIS – for marine seismic application
 
 QSEIS2D - for quasi 2D structure model (only teleseismic applications)
 
-For Windows user, the executable file is provided under folder "WindowsEXE". Linux user may compile the source codes with "gfortran" via a single command like, e.g.,
-
 ~>cd .../SourceCode
 
-~>gfortran -o qseis2006 *.f -O3
+~>make
 
 to get the excutable code qseis2006.
 

@@ -25,8 +25,14 @@ c
           else
             bsj(ik,3,ir)=bessj(3,x)
           endif
+          if(x.gt.4.d0)then
+            bsj(ik,4,ir)=bsj(ik,3,ir)*6.d0/x-bsj(ik,2,ir)
+          else
+            bsj(ik,4,ir)=bessj(4,x)
+          endif
           bsj(ik,-1,ir)=-bsj(ik,1,ir)
-          do i=-1,3
+          bsj(ik,-2,ir)=bsj(ik,2,ir)
+          do i=-2,4
             bsj(ik,i,ir)=bsj(ik,i,ir)*geospr(ir)
           enddo
         enddo

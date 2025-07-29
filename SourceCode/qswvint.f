@@ -14,15 +14,15 @@ c
       real*8 rdisk(nrmax)
       complex*16 carec,cbrec,ck,ck2,cdk,c2dk,cdk2,cfac,czdis2
       complex*16 swap(nbsjmax+ndtransmax)
-      complex*16 y0(4,6,nbsjmax+ndtransmax)
-      complex*16 y(4,6,nbsjmax+ndtransmax)
-      complex*16 cy(6,6),yb(4),cics(6),cm2(4,6)
+      complex*16 y0(7,6,nbsjmax+ndtransmax)
+      complex*16 y(7,6,nbsjmax+ndtransmax)
+      complex*16 cy(6,6),yb(9),cics(6),cm2(7,6)
+      complex*16 jmm2,jmm1,jm0,jmp1,jmp2,drjm1,drjp1 ! bsj
       real*8 taper
-      character*80 kernels
 c
       real*8 eps,rd2r
       complex*16 c2
-      data eps,rd2r/1.0d-06,5.0d-02/
+      data eps,rd2r/1.0d-06,1.0d-02/
       data c2/(2.d0,0.d0)/
 c
 c     ics = 1  when the azmuth-factor is cos(ms*theta) for poloidal mode
@@ -38,6 +38,9 @@ c
         cm2(2,istp)=dcmplx(dble((ms(istp)-1)**2),0.d0)
         cm2(3,istp)=dcmplx(dble((ms(istp)+1)**2),0.d0)
         cm2(4,istp)=cm2(1,istp)
+        cm2(5,istp)=dcmplx(dble(ms(istp)**2),0.d0)
+        cm2(6,istp)=dcmplx(dble((ms(istp)-1)**2),0.d0)
+        cm2(7,istp)=dcmplx(dble((ms(istp)+1)**2),0.d0)
       enddo
 c
       nrec=nno(lzr)
@@ -111,6 +114,8 @@ c
         kcut1(2)=0.d0
         kcut1(3)=0.8d0*k
         kcut1(4)=k
+        ! kcut1(3)=k
+        ! kcut1(4)=1.25*k
 c
         f=fcut
         n=nno(ls)
@@ -137,6 +142,8 @@ c
         kcut2(2)=0.d0
         kcut2(3)=0.8d0*k
         kcut2(4)=k
+        ! kcut2(3)=k
+        ! kcut2(4)=1.25*k
         lf1=1
       else
         kcut1(1)=0.d0
@@ -156,6 +163,7 @@ c
       else
         print *,' Calculate Bessel functions for x up to ',
      &       dble(nbsj)*dk*r(nr)
+        print *,nbsj
         do ir=1,nr
           geospr(ir)=1.d0/(zdis*zdis+r(ir)*r(ir))**ndtrans
         enddo
@@ -164,7 +172,7 @@ c
 c
       do lf=1,nf
         do istp=1,6
-          do i=1,4
+          do i=1,9
             do ir=1,nr
               grns(lf,i,ir,istp)=(0.d0,0.d0)
              enddo
@@ -204,6 +212,9 @@ c
             y0(2,istp,ik)=( cy(3,istp)+cics(istp)*cy(5,istp))/c2
             y0(3,istp,ik)=(-cy(3,istp)+cics(istp)*cy(5,istp))/c2
             y0(4,istp,ik)=carec*cy(2,istp)-cbrec*ck*cy(3,istp)
+            y0(5,istp,ik)=cy(2,istp)
+            y0(6,istp,ik)=( cy(4,istp)+cics(istp)*cy(6,istp))/c2
+            y0(7,istp,ik)=(-cy(4,istp)+cics(istp)*cy(6,istp))/c2
           enddo
         enddo
 c
@@ -213,7 +224,7 @@ c
           do ik=ik1,ik2
             k=dble(ik)*dk
             do istp=1,6
-              do i=1,4
+              do i=1,7
                 y(i,istp,ik)=y0(i,istp,ik)
      &                   *dcmplx(dexp(-0.5d0*(k*rdisk(ir))**2),0.d0)
               enddo
@@ -223,7 +234,7 @@ c
             ik1=max0(1,nk1-ndtrans)+idtrans
             ik2=nk2+ndtrans-idtrans
             do istp=1,6
-              do i=1,4
+              do i=1,7
                 do ik=ik1-1,ik2+1
                   swap(ik)=y(i,istp,ik)
                 enddo
@@ -242,29 +253,53 @@ c
           ik2=nk2
           do ik=ik1,ik2
             k=dble(ik)*dk
+            ck=dcmplx(k,0.d0)
             cfac=dcmplx(k*dk
      &                 *taper(k,kcut(1),kcut(2),kcut(3),kcut(4)),0.d0)
 c
             do istp=1,6
-              do i=1,4
+              do i=1,7
                 y(i,istp,ik)=y(i,istp,ik)*cfac
               enddo
-              yb(1)=y(1,istp,ik)*dcmplx(bsj(ik,ms(istp),ir),0.d0)
-              yb(2)=y(2,istp,ik)*dcmplx(bsj(ik,ms(istp)-1,ir),0.d0)
-              yb(3)=y(3,istp,ik)*dcmplx(bsj(ik,ms(istp)+1,ir),0.d0)
-              yb(4)=y(4,istp,ik)*dcmplx(bsj(ik,ms(istp),ir),0.d0)
+              jmm1 = dcmplx(bsj(ik,ms(istp)-1,ir),0.d0)
+              jm0  = dcmplx(bsj(ik,ms(istp),ir),0.d0)
+              jmp1 = dcmplx(bsj(ik,ms(istp)+1,ir),0.d0)
+              jmm2 = dcmplx(bsj(ik,ms(istp)-2,ir),0.d0)
+              jmp2 = dcmplx(bsj(ik,ms(istp)+2,ir),0.d0)
+              drjm1=(jmm2-jm0)/c2
+              drjp1=(jm0-jmp2)/c2
 c
-              grns(lf,1,ir,istp)=grns(lf,1,ir,istp)+yb(1)
-              grns(lf,2,ir,istp)=grns(lf,2,ir,istp)+yb(2)+yb(3)
-              grns(lf,3,ir,istp)=grns(lf,3,ir,istp)
-     &                          -cics(istp)*(yb(2)-yb(3))
-              grns(lf,4,ir,istp)=grns(lf,4,ir,istp)+yb(4)
+              yb(1)=y(1,istp,ik)*jm0
+              yb(2)=y(2,istp,ik)*jmm1
+              yb(3)=y(3,istp,ik)*jmp1
+              yb(4)=y(4,istp,ik)*jm0
+              yb(5)=y(5,istp,ik)*jm0
+              yb(6)=y(6,istp,ik)*jmm1
+              yb(7)=y(7,istp,ik)*jmp1
+              yb(8)=y(2,istp,ik)*ck*drjm1+y(3,istp,ik)*ck*drjp1
+              yb(9)=-cics(istp)*(y(2,istp,ik)*ck*drjm1-y(3,istp,ik)*ck*drjp1)
+    !           yb(8)=-ck*(y(2,istp,ik)-y(3,istp,ik))*jm0
+    !  &              -((yb(2)+yb(3))+
+    !  &               cics(istp)*dcmplx(ms(istp),0.d0)*(-cics(istp)*(yb(2)-yb(3))))/r(ir)
+    !           yb(9)=ck*(y(2,istp,ik)+y(3,istp,ik))/cics(istp)*jm0
+    !  &              -(cics(istp)*dcmplx(ms(istp),0.d0)*(yb(2)+yb(3))+
+    !  &               (-cics(istp)*(yb(2)-yb(3))))/r(ir)
+c
+              grns(lf,1,ir,istp)=grns(lf,1,ir,istp)+yb(1)                          ! tz
+              grns(lf,2,ir,istp)=grns(lf,2,ir,istp)+yb(2)+yb(3)                    ! tr
+              grns(lf,3,ir,istp)=grns(lf,3,ir,istp)-cics(istp)*(yb(2)-yb(3))       ! tt
+              grns(lf,4,ir,istp)=grns(lf,4,ir,istp)+yb(4)                          ! tv=(ezz+err+ett)
+              grns(lf,5,ir,istp)=grns(lf,5,ir,istp)+yb(5)                          ! szz stress
+              grns(lf,6,ir,istp)=grns(lf,6,ir,istp)+yb(6)+yb(7)                    ! szr stress
+              grns(lf,7,ir,istp)=grns(lf,7,ir,istp)-cics(istp)*(yb(6)-yb(7))       ! szt stress
+              grns(lf,8,ir,istp)=grns(lf,8,ir,istp)+yb(8)                          ! trr=ptr/pr
+              grns(lf,9,ir,istp)=grns(lf,9,ir,istp)+yb(9)                          ! ttr=ptt/pr
             enddo
           enddo
         enddo
 c
-        write(*,'(i6,a,E13.6,a,i7)')lf,'.',f,
-     &      'Hz: slowness samples = ',1+nk2-nk1-ndtrans
+    !     write(*,'(i6,a,E13.6,a,i7)')lf,'.',f,
+    !  &      'Hz: slowness samples = ',1+nk2-nk1-ndtrans
       enddo
 c
       if(iflat.eq.1)then
@@ -285,7 +320,7 @@ c
           endif
           cfac=dcmplx(dsqrt((rr0/rr)**nrr*(rr0/rs)**nrs*fac),0.d0)
           do istp=1,6
-            do i=1,4
+            do i=1,9
               do lf=lf1,nf
                 grns(lf,i,ir,istp)=grns(lf,i,ir,istp)*cfac
               enddo

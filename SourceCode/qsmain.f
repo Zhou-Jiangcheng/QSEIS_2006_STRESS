@@ -50,7 +50,7 @@ c
         call qsmultis(grnexist)
         iexist=0
         do istp=1,7
-          do i=1,4
+          do i=1,9
             if(fsel(i,istp).eq.1)then
               call qsfftinv(i,istp)
             endif

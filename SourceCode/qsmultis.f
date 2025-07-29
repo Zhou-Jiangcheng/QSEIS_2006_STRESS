@@ -32,14 +32,14 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       real*8 az1,az2
       real*8 weight(0:5)
       real*8 t(2*nfmax),y1(nrmax),y2(nrmax)
-      character*80 textline
+      character*110 textline
 c
       real*8 deg2rad
       data deg2rad/1.745329251994328d-02/
 c
       if(grnexist)then
         do istp=1,4
-          do icmp=1,4
+          do icmp=1,9
             if(ms(istp).eq.0.and.icmp.eq.3)then
               do lf=1,nf
                 do ir=1,nr
@@ -102,7 +102,7 @@ c
         enddo
       enddo
       if(grnexist)then
-        do icmp=1,4
+        do icmp=1,9
           if(fsel(icmp,7).eq.1)then
             unit=40+icmp
             open(unit,file=outfile(icmp,7),status='unknown')
@@ -133,3 +133,4 @@ c
 c
       return
       end
+      

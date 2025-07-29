@@ -8,7 +8,7 @@ c
       integer*4 nzmax,lmax,nrmax,nfmax,ndtransmax
       parameter(lmax=500)
       parameter(nzmax=lmax+2)
-      parameter(nrmax=101,nfmax=8192)
+      parameter(nrmax=401,nfmax=8192)
       parameter(ndtransmax=4)
 c
 c     INDEX PARAMETERS FOR BESSEL FUNCTION TABLES
@@ -163,14 +163,14 @@ c
       complex*16 root(nrootmax),pole(npolemax) 
       common /seismometer/ root,pole,asm,nroot,npole
 c
-c     table of J_n(x), n = -1, 0, 1, 2, 3
+c     table of J_n(x), n = -2, -1, 0, 1, 2, 3, 4
 c
-      real*8 bsj(nbsjmax,-1:3,nrmax),geospr(nrmax)
+      real*8 bsj(nbsjmax,-2:4,nrmax),geospr(nrmax)
       common /bessels/ bsj,geospr
 c
 c     green's functions
 c
-      complex*16 grns(nfmax,4,nrmax,7)
+      complex*16 grns(nfmax,9,nrmax,7)
       common /grnfcts/ grns
 c
 c     title text
@@ -181,9 +181,9 @@ c
 c
 c     input and output data files
 c
-      character*80 inputfile
+      character*110 inputfile
       common /inputdata/ inputfile
-      integer*4 ssel(7),fsel(4,7),flen(4,7)
-      character*83 outfile(4,7)
+      integer*4 ssel(7),fsel(9,7),flen(9,7)
+      character*113 outfile(9,7)
       common /outsel/ ssel,fsel,flen
       common /outdata/ outfile

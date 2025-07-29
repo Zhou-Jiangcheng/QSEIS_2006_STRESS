@@ -18,7 +18,7 @@ c
       real*8 suppress,ros,vps,vss,fcut
       real*8 rot(3,3),sm(3,3),swap(3,3)
       real*8 resolut(3),t0(nrmax)
-      character*80 outfile0(7),comments*180
+      character*110 outfile0(7),comments*180
 c
 c     source parameters
 c     =================
@@ -184,10 +184,11 @@ c
       read(comments,*)(outfile0(istp),istp=1,6)
       do istp=1,6
         if(ssel(istp).ne.1)ssel(istp)=0
-        do flen0=80,1,-1
+        do flen0=110,1,-1
           if(outfile0(istp)(flen0:flen0).ne.' ')goto 100
         enddo
 100     continue
+c
         outfile(1,istp)=outfile0(istp)(1:flen0)//'.tz'
         outfile(2,istp)=outfile0(istp)(1:flen0)//'.tr'
         outfile(3,istp)=outfile0(istp)(1:flen0)//'.tt'
@@ -195,6 +196,16 @@ c
         do i=1,4
           flen(i,istp)=flen0+3
         enddo
+c
+        outfile(5,istp)=outfile0(istp)(1:flen0)//'.szz'
+        outfile(6,istp)=outfile0(istp)(1:flen0)//'.szr'
+        outfile(7,istp)=outfile0(istp)(1:flen0)//'.szt'
+        outfile(8,istp)=outfile0(istp)(1:flen0)//'.trr'
+        outfile(9,istp)=outfile0(istp)(1:flen0)//'.ttr'
+        do i=5,9
+          flen(i,istp)=flen0+4
+        enddo
+
       enddo
       call getdata(unit,comments)
       read(comments,*)ssel(7)
@@ -278,7 +289,7 @@ c
       else
         read(unit,*)(azimuth(i),i=1,nr)
       endif
-      do flen0=80,1,-1
+      do flen0=110,1,-1
         if(outfile0(7)(flen0:flen0).ne.' ')goto 200
       enddo
 200   continue
@@ -726,7 +737,7 @@ c
       write(*,'(a)')' km'
 c
       do istp=1,7
-        do i=1,4
+        do i=1,9
           if(ssel(istp).ge.1)then
             fsel(i,istp)=1
           else
@@ -738,7 +749,11 @@ c
 c     no toroidal component if ms = 0
 c
       do istp=1,6
-        if(ms(istp).eq.0)fsel(3,istp)=0
+        if(ms(istp).eq.0)then
+          fsel(3,istp)=0
+          fsel(7,istp)=0
+          fsel(9,istp)=0
+        endif
       enddo
 c
       calsh=ssel(2).eq.1.or.ssel(3).eq.1.or.ssel(6).eq.1
@@ -759,5 +774,18 @@ c
       endif
 1000  format(i5,f12.2,3f11.4,2f8.1)
 c
+c     output layered earth model for python
+c
+      open(unit=99, file='layered_model.dat', status='unknown', 
+     &     action='write',form='formatted')
+      do i = 1, lmax
+         if (h(i).ne.0)then
+           write(99, '(6(E15.6,1X))') h(i), ro(i), vp(i), vs(i), qp(i), qs(i)
+         else
+           goto 1001
+1001     endif
+      end do
+      close(99)
+
       return
       end

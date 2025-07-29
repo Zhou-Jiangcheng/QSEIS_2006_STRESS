@@ -8,14 +8,14 @@ c
       integer*4 nzmax,lmax,nrmax,nfmax,ndtransmax
       parameter(lmax=500)
       parameter(nzmax=lmax+2)
-      parameter(nrmax=401,nfmax=8192)
+      parameter(nrmax=201,nfmax=4096)
       parameter(ndtransmax=4)
 c
 c     INDEX PARAMETERS FOR BESSEL FUNCTION TABLES
 c     ===========================================
 c
-      integer*4 nbsjmax
-      parameter(nbsjmax=100000)
+      integer*4 nk0max,nbsjmax
+      parameter(nk0max=8192,nbsjmax=nk0max*8)
 c
 c     INDEX PARAMETERS FOR SEISMOMETER CHARACTERISTICS
 c     ================================================

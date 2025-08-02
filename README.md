@@ -2,7 +2,7 @@ FORTRAN code for calculating synthetic seismograms based on a layered elastic ha
 
 Last update by Rongjiang Wang: Berlin, 28. July 2025
 
-Modified by Zhou Jiangcheng: Beijing, 29. July 2025
+Modified by Zhou Jiangcheng: Beijing, July 2025
 
 Highlights:
 
@@ -28,7 +28,7 @@ QSEIS2D - for quasi 2D structure model (only teleseismic applications)
 
 ~>make
 
-to get the excutable code qseis2006.
+to get the excutable code qseis_stress.
 
 After start the executable code, the program ask for an input file in the ASCII format. An example input file is provided under folder "InputFile". You may change the input data included in this file for your own applications.
 

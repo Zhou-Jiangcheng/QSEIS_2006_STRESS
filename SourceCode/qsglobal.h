@@ -15,7 +15,7 @@ c     INDEX PARAMETERS FOR BESSEL FUNCTION TABLES
 c     ===========================================
 c
       integer*4 nk0min,nk0max,nbsjmax
-      parameter(nk0min=500,nk0max=200000,nbsjmax=nk0max*8)
+      parameter(nk0min=500,nk0max=20000,nbsjmax=nk0max*8)
 c
 c     PARAMETERS FOR ESTIMATE WAVENUMBER
 c     ===========================================

@@ -1,8 +1,10 @@
+# Introduction
+
 FORTRAN code for calculating synthetic seismograms based on a layered elastic half-space earth model.
 
-Last update by Rongjiang Wang: Berlin, 28. July 2025
+Initiated by Rongjiang Wang: Berlin.
 
-Modified by Zhou Jiangcheng: Beijing, July 2025
+Modified by Zhou Jiangcheng: Beijing, 2025.
 
 Highlights:
 
@@ -24,11 +26,17 @@ MSEIS – for marine seismic application
 
 QSEIS2D - for quasi 2D structure model (only teleseismic applications)
 
-~>cd .../SourceCode
+# Install
 
-~>make
+First install gfortran, make and git, then
 
-to get the excutable code qseis_stress.
+```
+git clone https://github.com/Zhou-Jiangcheng/QSEIS_2006_STRESS
+cd QSEIS_2006_STRESS/SourceCode
+make
+```
+
+# Usage
 
 After start the executable code, the program ask for an input file in the ASCII format. An example input file is provided under folder "InputFile". You may change the input data included in this file for your own applications.
 
@@ -42,8 +50,12 @@ Notes to the co-ordinate convention used in QSEIS:
 
 (4) The final results for your application are then obtained by convoluting your source components with the corresponding Green's functions.
 
-References
+# References
 
 Wang, R., (1999), A simple orthonormalization method for stable and efficient computation of Green's functions, Bulletin of the Seismological Society of America, 89(3), 733-741.
 
 Wang, R., and H. Wang (2007), A fast converging and anti-aliasing algorithm for Green’s functions in terms of spherical or cylindrical harmonics, Geophysical Journal International, doi: 10.1111/j.1365-246X.2007.03385.x.
+
+# To be continued
+
+The output Green's function libraries have been verified, but the synthesis of stress seismograms is now carried out in a separate Python program,  [pygrnwang](https://github.com/Zhou-Jiangcheng/pygrnwang). In the future, the synthesis of stress will be added, along with the inclusion of strain and rotational components.

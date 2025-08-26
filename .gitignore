@@ -1,2 +1,8 @@
 *.o
 *.bin
+*.exe
+*.obj
+*.mod
+*.vs
+*.code
+*.idea

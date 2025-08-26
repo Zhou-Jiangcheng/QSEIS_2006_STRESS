@@ -781,7 +781,8 @@ c
      &     action='write',form='formatted')
       do i = 1, lmax
          if (h(i).ne.0)then
-           write(99, '(6(E15.6,1X))') h(i), ro(i), vp(i), vs(i), qp(i), qs(i)
+           write(99, '(6(E15.6,1X))') h(i), ro(i), vp(i), vs(i), qp(i), 
+     &           qs(i)
          else
            goto 1001
 1001     endif

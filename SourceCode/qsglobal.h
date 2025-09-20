@@ -169,14 +169,14 @@ c
       complex*16 root(nrootmax),pole(npolemax) 
       common /seismometer/ root,pole,asm,nroot,npole
 c
-c     table of J_n(x), n = -2, -1, 0, 1, 2, 3, 4
+c     table of J_n(x), n = -1, 0, 1, 2, 3
 c
-      real*8 bsj(nbsjmax,-2:4,nrmax),geospr(nrmax)
+      real*8 bsj(nbsjmax,-1:3,nrmax),geospr(nrmax)
       common /bessels/ bsj,geospr
 c
 c     green's functions
 c
-      complex*16 grns(nfmax,10,nrmax,7)
+      complex*16 grns(nfmax,19,nrmax,7)
       common /grnfcts/ grns
 c
 c     title text
@@ -189,7 +189,7 @@ c     input and output data files
 c
       character*110 inputfile
       common /inputdata/ inputfile
-      integer*4 ssel(7),fsel(10,7),flen(10,7)
-      character*113 outfile(10,7)
+      integer*4 ssel(7),fsel(19,7),flen(19,7)
+      character*113 outfile(19,7)
       common /outsel/ ssel,fsel,flen
       common /outdata/ outfile

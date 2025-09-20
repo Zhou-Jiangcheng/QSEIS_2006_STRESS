@@ -7,7 +7,7 @@ ifeq ($(OS),Windows_NT)
     PATHSEP := \\
 else
     DETECTED_OS := $(shell uname -s)
-    EXE_EXT :=
+    EXE_EXT := .bin
     MKDIR := mkdir -p
     PATHSEP := /
 endif

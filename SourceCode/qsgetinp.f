@@ -197,14 +197,28 @@ c
           flen(i,istp)=flen0+3
         enddo
 c
-        outfile(5,istp)=outfile0(istp)(1:flen0)//'.szz'
-        outfile(6,istp)=outfile0(istp)(1:flen0)//'.szr'
-        outfile(7,istp)=outfile0(istp)(1:flen0)//'.szt'
-        outfile(8,istp)=outfile0(istp)(1:flen0)//'.stt'
-        outfile(9,istp)=outfile0(istp)(1:flen0)//'.srr'
-        outfile(10,istp)=outfile0(istp)(1:flen0)//'.srt'
-        do i=5,10
+        outfile(5,istp)=outfile0(istp)(1:flen0)//'.ezz'
+        outfile(6,istp)=outfile0(istp)(1:flen0)//'.ezr'
+        outfile(7,istp)=outfile0(istp)(1:flen0)//'.ezt'
+        outfile(8,istp)=outfile0(istp)(1:flen0)//'.ett'
+        outfile(9,istp)=outfile0(istp)(1:flen0)//'.err'
+        outfile(10,istp)=outfile0(istp)(1:flen0)//'.ert'
+c
+        outfile(11,istp)=outfile0(istp)(1:flen0)//'.szz'
+        outfile(12,istp)=outfile0(istp)(1:flen0)//'.szr'
+        outfile(13,istp)=outfile0(istp)(1:flen0)//'.szt'
+        outfile(14,istp)=outfile0(istp)(1:flen0)//'.stt'
+        outfile(15,istp)=outfile0(istp)(1:flen0)//'.srr'
+        outfile(16,istp)=outfile0(istp)(1:flen0)//'.srt'
+        do i=5,16
           flen(i,istp)=flen0+4
+        enddo
+c
+        outfile(17,istp)=outfile0(istp)(1:flen0)//'.oz'
+        outfile(18,istp)=outfile0(istp)(1:flen0)//'.or'
+        outfile(19,istp)=outfile0(istp)(1:flen0)//'.ot'
+        do i=17,19
+          flen(i,istp)=flen0+3
         enddo
 
       enddo
@@ -738,7 +752,7 @@ c
       write(*,'(a)')' km'
 c
       do istp=1,7
-        do i=1,10
+        do i=1,19
           if(ssel(istp).ge.1)then
             fsel(i,istp)=1
           else
@@ -754,6 +768,10 @@ c
           fsel(3,istp)=0
           fsel(7,istp)=0
           fsel(10,istp)=0
+          fsel(13,istp)=0
+          fsel(16,istp)=0
+          fsel(17,istp)=0
+          fsel(18,istp)=0
         endif
       enddo
 c

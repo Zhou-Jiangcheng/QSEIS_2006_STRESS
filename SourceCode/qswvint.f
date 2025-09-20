@@ -12,13 +12,13 @@ c
       real*8 fac,zdis,rsdis,thickness,wvlen
       real*8 kcut(4),kcut1(4),kcut2(4)
       real*8 rdisk(nrmax)
-      complex*16 carec,cbrec,clar,cmur
+      complex*16 carec,cbrec,clar,cmur,cr
       complex*16 ck,ck2,cdk,c2dk,cdk2,cfac,czdis2,cm
       complex*16 swap(nbsjmax+ndtransmax)
       complex*16 y0(9,6,nbsjmax+ndtransmax)
       complex*16 y(10,6,nbsjmax+ndtransmax)
-      complex*16 cy(6,6),yb(9),cics(6),cm2(9,6)
-      complex*16 jmm2,jmm1,jm0,jmp1,jmp2 ! bsj
+      complex*16 cy(6,6),yb(11),cics(6),cm2(9,6)
+      complex*16 jmm1,jm0,jmp1 ! bsj
       real*8 taper
 c
       complex*16 c1,c2,c3
@@ -179,7 +179,7 @@ c
 c
       do lf=1,nf
         do istp=1,6
-          do i=1,9
+          do i=1,19
             do ir=1,nr
               grns(lf,i,ir,istp)=(0.d0,0.d0)
              enddo
@@ -228,6 +228,7 @@ c
         enddo
 c
         do ir=1,nr
+          cr=dcmplx(r(ir),0.d0)
           ik1=max0(1,nk1-ndtrans)
           ik2=nk2+ndtrans
           do ik=ik1,ik2
@@ -273,8 +274,6 @@ c
               jmm1 = dcmplx(bsj(ik,ms(istp)-1,ir),0.d0)
               jm0  = dcmplx(bsj(ik,ms(istp),ir),0.d0)
               jmp1 = dcmplx(bsj(ik,ms(istp)+1,ir),0.d0)
-              jmm2 = dcmplx(bsj(ik,ms(istp)-2,ir),0.d0)
-              jmp2 = dcmplx(bsj(ik,ms(istp)+2,ir),0.d0)
               cm=dcmplx(ms(istp), 0.d0)
 c
               yb(1)=y(1,istp,ik)*jm0
@@ -286,8 +285,10 @@ c
               yb(7)=y(7,istp,ik)*jmp1
               yb(8)=y(8,istp,ik)*jm0
               yb(9)=y(9,istp,ik)*jm0
+              yb(10)=y(1,istp,ik)*jmm1
+              yb(11)=y(1,istp,ik)*jmp1
 c
-c uz
+c uz disp
               grns(lf,1,ir,istp)=grns(lf,1,ir,istp)+yb(1)
 c ur
               grns(lf,2,ir,istp)=grns(lf,2,ir,istp)+yb(2)-yb(3)
@@ -296,42 +297,88 @@ c ut
      &         -cics(istp)*(yb(2)+yb(3))
 c v
               grns(lf,4,ir,istp)=grns(lf,4,ir,istp)+yb(4)
-c szz
-              grns(lf,5,ir,istp)=grns(lf,5,ir,istp)+yb(5)
-c szr
-              grns(lf,6,ir,istp)=grns(lf,6,ir,istp)+yb(6)-yb(7)
-c szt
+c ezz
+              grns(lf,5,ir,istp)=grns(lf,5,ir,istp)
+     &         +(yb(5)-clar*yb(4))/(c2*cmur)
+c ezr
+              grns(lf,6,ir,istp)=grns(lf,6,ir,istp)
+     &         +(yb(6)-yb(7))/(c2*cmur)
+c ezt
               grns(lf,7,ir,istp)=grns(lf,7,ir,istp)
-     &         -cics(istp)*(yb(6)+yb(7))
-c stt, srr, srt
+     &         -cics(istp)*(yb(6)+yb(7))/(c2*cmur)
+c ett, err, ert strain
               if (r(ir).gt.0.d0)then
-                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)+clar*yb(4)+2*cmur*
-     &           (-((cm-c1)*yb(2)+(cm+c1)*yb(3))/dcmplx(r(ir),0.d0))
-                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)+clar*yb(4)+2*cmur*
-     &        (-yb(8)+((cm-c1)*yb(2)+(cm+c1)*yb(3))/dcmplx(r(ir),0.d0))
-                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)+2*cmur*(yb(9)/c2
-     &              -(cics(istp)*cm*(yb(2)-yb(3))
-     &              +(-cics(istp)*(yb(2)+yb(3))))/dcmplx(r(ir),0.d0))
+                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)
+     &           -((cm-c1)*yb(2)+(cm+c1)*yb(3))/cr
+                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)
+     &           -yb(8)+((cm-c1)*yb(2)+(cm+c1)*yb(3))/cr
+                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)+yb(9)/c2
+     &                 -(cics(istp)*cm*(yb(2)-yb(3))
+     &                 +(-cics(istp))*(yb(2)+yb(3)))/cr
               else if(ms(istp).eq.0.d0)then
-                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)+clar*yb(4)+2*cmur*
+                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)
+     &           -ck/c2*(y(2,istp,ik)+y(3,istp,ik))
+                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)
+     &           -y(8,istp,ik)+ck/c2*(y(2,istp,ik)+y(3,istp,ik))
+                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)
+     &           +y(9,istp,ik)/c2
+     &           +cics(istp)*ck/c2*(y(2,istp,ik)+y(3,istp,ik))
+              else if(ms(istp).eq.1.d0)then
+                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)+(0.d0,0.d0)
+                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)+(0.d0,0.d0)
+                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)+(0.d0,0.d0)
+              else if(ms(istp).eq.2.d0)then
+                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)
+     &            -ck/c2*y(2,istp,ik)
+                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)
+     &           +ck/c2*y(2,istp,ik)
+                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)
+     &           -cics(istp)*ck/c2*y(2,istp,ik)
+              endif
+c szz
+              grns(lf,11,ir,istp)=grns(lf,11,ir,istp)+yb(5)
+c szr
+              grns(lf,12,ir,istp)=grns(lf,12,ir,istp)+yb(6)-yb(7)
+c szt
+              grns(lf,13,ir,istp)=grns(lf,13,ir,istp)
+     &         -cics(istp)*(yb(6)+yb(7))
+c stt, srr, srt stress
+              if (r(ir).gt.0.d0)then
+                grns(lf,14,ir,istp)=grns(lf,14,ir,istp)+clar*yb(4)+2*cmur*
+     &           (-((cm-c1)*yb(2)+(cm+c1)*yb(3))/cr)
+                grns(lf,15,ir,istp)=grns(lf,15,ir,istp)+clar*yb(4)+2*cmur*
+     &        (-yb(8)+((cm-c1)*yb(2)+(cm+c1)*yb(3))/cr)
+                grns(lf,16,ir,istp)=grns(lf,16,ir,istp)+2*cmur*(yb(9)/c2
+     &              -(cics(istp)*cm*(yb(2)-yb(3))
+     &              +(-cics(istp)*(yb(2)+yb(3))))/cr)
+              else if(ms(istp).eq.0.d0)then
+                grns(lf,14,ir,istp)=grns(lf,14,ir,istp)+clar*yb(4)+2*cmur*
      &              (-ck/c2*(y(2,istp,ik)+y(3,istp,ik)))
-                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)+clar*yb(4)+2*cmur*
+                grns(lf,15,ir,istp)=grns(lf,15,ir,istp)+clar*yb(4)+2*cmur*
      &              (-y(8,istp,ik)+ck/c2*(y(2,istp,ik)+y(3,istp,ik)))
-                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)+2*cmur*
+                grns(lf,16,ir,istp)=grns(lf,16,ir,istp)+2*cmur*
      &              (y(9,istp,ik)/c2+cics(istp)*ck/c2*(y(2,istp,ik)
      &              +y(3,istp,ik)))
               else if(ms(istp).eq.1.d0)then
-                grns(lf,8,ir,istp)=dcmplx(0.d0, 0.d0)
-                grns(lf,9,ir,istp)=dcmplx(0.d0, 0.d0)
-                grns(lf,10,ir,istp)=dcmplx(0.d0, 0.d0)
+                grns(lf,14,ir,istp)=grns(lf,14,ir,istp)+dcmplx(0.d0, 0.d0)
+                grns(lf,15,ir,istp)=grns(lf,15,ir,istp)+dcmplx(0.d0, 0.d0)
+                grns(lf,16,ir,istp)=grns(lf,16,ir,istp)+dcmplx(0.d0, 0.d0)
               else if(ms(istp).eq.2.d0)then
-                grns(lf,8,ir,istp)=grns(lf,8,ir,istp)+2*cmur*
+                grns(lf,14,ir,istp)=grns(lf,14,ir,istp)+2*cmur*
      &               (-ck/c2*y(2,istp,ik))
-                grns(lf,9,ir,istp)=grns(lf,9,ir,istp)+2*cmur*
+                grns(lf,15,ir,istp)=grns(lf,15,ir,istp)+2*cmur*
      &               (+ck/c2*y(2,istp,ik))
-                grns(lf,10,ir,istp)=grns(lf,10,ir,istp)+2*cmur*
+                grns(lf,16,ir,istp)=grns(lf,16,ir,istp)+2*cmur*
      &              (-cics(istp)*ck/c2*y(2,istp,ik))
               endif
+c oz,or,ot rotation
+            grns(lf,17,ir,istp)=grns(lf,17,ir,istp)+yb(9)/c2
+            grns(lf,18,ir,istp)=grns(lf,18,ir,istp)
+     &       -c1/c2*cics(istp)*ck*(yb(10)+yb(11))
+     &       +cics(istp)*(yb(6)+yb(7))/(2*cmur)
+            grns(lf,19,ir,istp)=grns(lf,19,ir,istp)
+     &       -c1/c2*ck*(yb(10)-yb(11))
+     &       +(yb(6)-yb(7))/(2*cmur)
             enddo
           enddo
         enddo
@@ -358,7 +405,7 @@ c
           endif
           cfac=dcmplx(dsqrt((rr0/rr)**nrr*(rr0/rs)**nrs*fac),0.d0)
           do istp=1,6
-            do i=1,9
+            do i=1,19
               do lf=lf1,nf
                 grns(lf,i,ir,istp)=grns(lf,i,ir,istp)*cfac
               enddo

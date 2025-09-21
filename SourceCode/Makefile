@@ -30,8 +30,8 @@ SRC     := $(wildcard *.f)
 OBJ     := $(SRC:.f=.o)
 
 # Target executables
-TARGET_BIN := qseis_stress$(EXE_EXT)
-TARGET_DBG := qseis_stress_dbg$(EXE_EXT)
+TARGET_BIN := qseis2025$(EXE_EXT)
+TARGET_DBG := qseis2025_dbg$(EXE_EXT)
 
 .PHONY: all debug release clean info run
 

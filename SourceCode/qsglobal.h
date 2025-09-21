@@ -11,18 +11,6 @@ c
       parameter(nrmax=101,nfmax=8192)
       parameter(ndtransmax=4)
 c
-c     INDEX PARAMETERS FOR BESSEL FUNCTION TABLES
-c     ===========================================
-c
-      integer*4 nk0min,nk0max,nbsjmax
-      parameter(nk0min=500,nk0max=10000,nbsjmax=nk0max*8)
-c
-c     PARAMETERS FOR ESTIMATE WAVENUMBER
-c     ===========================================
-c
-      real*8 epswv,rd2r
-      parameter(epswv=1.0d-06,rd2r=5.0d-02)
-c
 c     INDEX PARAMETERS FOR SEISMOMETER CHARACTERISTICS
 c     ================================================
 c     (max. number of roots and poles)
@@ -55,6 +43,15 @@ c     =============================
 c
       integer*4 ndens
       parameter(ndens=1)
+c
+c     PARAMETERS FOR ESTIMATE WAVENUMBER
+c     ===========================================
+c
+      integer*4 nk0max,nbsjmax
+      parameter(nk0max=10000,nbsjmax=nk0max*8)
+      real*8 epswv,rd2r
+c      parameter(epswv=1.0d-06,rd2r=5.0d-02)
+      common /wavenumber/ epswv,rd2r
 c
       complex*16 accair,cvpair,kpair,comega
       common /airpara/ accair,cvpair,kpair,comega
@@ -189,7 +186,7 @@ c     input and output data files
 c
       character*110 inputfile
       common /inputdata/ inputfile
-      integer*4 ssel(7),fsel(19,7),flen(19,7)
+      integer*4 ssel(7),fsel(19,7),flen(19,7),outsel(5)
       character*113 outfile(19,7)
-      common /outsel/ ssel,fsel,flen
+      common /outsel/ ssel,fsel,flen,outsel
       common /outdata/ outfile

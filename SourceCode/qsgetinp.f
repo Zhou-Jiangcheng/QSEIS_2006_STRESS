@@ -7,7 +7,7 @@ c
 c
 c     work space
 c
-      integer*4 i,ir,istp,j,l,l1,lrs,lcut,n,ierr,iazi
+      integer*4 i,ir,istp,iout,j,l,l1,lrs,lcut,n,ierr,iazi
       integer*4 irlast,irnow,is,ns
       integer*4 ieqdis,kmordeg,iv0,flen0,nup,nlw
       real*8 rr,z,pi,taunorm,rnow,rlast,tnow,tlast
@@ -90,6 +90,10 @@ c
       if(ndtrans.lt.0.or.ndtrans.gt.ndtransmax)then
         stop 'Error in input: wrong select of integration algorithm!'
       endif
+c
+      call getdata(unit,comments)
+      read(comments,*)epswv,rd2r
+c
       call getdata(unit,comments)
       read(comments,*)(slw(j),j=1,4)
       do j=1,4
@@ -182,6 +186,8 @@ c
       read(comments,*)(ssel(istp),istp=1,6)
       call getdata(unit,comments)
       read(comments,*)(outfile0(istp),istp=1,6)
+      call getdata(unit,comments)
+      read(comments,*)(outsel(iout),iout=1,5)
       do istp=1,6
         if(ssel(istp).ne.1)ssel(istp)=0
         do flen0=110,1,-1
@@ -752,8 +758,34 @@ c
       write(*,'(a)')' km'
 c
       do istp=1,7
-        do i=1,19
-          if(ssel(istp).ge.1)then
+        do i=1,3
+          if((ssel(istp).ge.1).and.(outsel(1).eq.1))then
+            fsel(i,istp)=1
+          else
+            fsel(i,istp)=0
+          endif
+        enddo
+        if((ssel(istp).ge.1).and.(outsel(2).eq.1))then
+          fsel(4,istp)=1
+        else
+          fsel(4,istp)=0
+        endif
+        do i=5,10
+          if((ssel(istp).ge.1).and.(outsel(3).eq.1))then
+            fsel(i,istp)=1
+          else
+            fsel(i,istp)=0
+          endif
+        enddo
+        do i=11,16
+          if((ssel(istp).ge.1).and.(outsel(4).eq.1))then
+            fsel(i,istp)=1
+          else
+            fsel(i,istp)=0
+          endif
+        enddo
+        do i=17,19
+          if((ssel(istp).ge.1).and.(outsel(5).eq.1))then
             fsel(i,istp)=1
           else
             fsel(i,istp)=0

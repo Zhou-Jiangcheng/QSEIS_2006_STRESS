@@ -5,4 +5,6 @@
 *.mod
 *.vs
 *.code
-*.idea
+.vs/
+.idea/
+.vscode/

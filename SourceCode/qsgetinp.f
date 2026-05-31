@@ -232,8 +232,14 @@ c
       read(comments,*)ssel(7)
       if(ssel(7).eq.1)then
         read(comments,*)ssel(7),(mtensor(i),i=1,6),outfile0(7)
+        do i=1,3
+          force(i)=0.d0
+        enddo
       else if(ssel(7).eq.2)then
         read(comments,*)ssel(7),mis,mcl,mdc,st,di,ra,outfile0(7)
+        do i=1,3
+          force(i)=0.d0
+        enddo
         st=st*deg2rad
         di=di*deg2rad
         ra=ra*deg2rad
@@ -294,10 +300,19 @@ c
         mtensor(4)=sm(1,2)
         mtensor(5)=sm(2,3)
         mtensor(6)=sm(3,1)
+      else if(ssel(7).eq.3)then
+        read(comments,*)ssel(7),(force(i),i=1,3),outfile0(7)
+        do i=1,6
+          mtensor(i)=0.d0
+        enddo
       else
         do i=1,6
           mtensor(i)=0.d0
         enddo
+        do i=1,3
+          force(i)=0.d0
+        enddo
+        outfile0(7)='none'
         ssel(7)=0
       endif
       call getdata(unit,comments)
@@ -832,6 +847,8 @@ c
       enddo
 c
       calsh=ssel(2).eq.1.or.ssel(3).eq.1.or.ssel(6).eq.1
+     &      .or.(ssel(7).eq.3.and.
+     &      (dabs(force(1)).gt.0.d0.or.dabs(force(2)).gt.0.d0))
 c
 c     for marine seismic
 c

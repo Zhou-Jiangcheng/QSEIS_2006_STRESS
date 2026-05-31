@@ -185,15 +185,18 @@
 #	OUTPUT FILES FOR AN ARBITRARY POINT DISLOCATION SOURCE
 #               (for applications to earthquakes)
 #	======================================================
-# 1. selection (0 = not selected; 1 or 2 = selected), if (selection = 1), then
+# 1. selection (0 = not selected; 1, 2 or 3 = selected), if (selection = 1), then
 #    the 6 moment tensor elements [N*m]: Mxx, Myy, Mzz, Mxy, Myz, Mzx (x is
 #    northward, y is eastward and z is downard); else if (selection = 2), then
 #    Mis [N*m] = isotropic moment part = (MT+MN+MP)/3, Mcl = CLVD moment part
 #    = (2/3)(MT+MP-2*MN), Mdc = double-couple moment part = MT-MN, Strike [deg],
-#    Dip [deg] and Rake [deg].
+#    Dip [deg] and Rake [deg]; else if (selection = 3), then
+#    Fx, Fy and Fz [N] in the local Cartesian system (x = north, y = east,
+#    z = downward).
 #
 #    Note: to use this option, the Green's functions above should be computed
-#          (selection = 1) if they do not exist already.
+#          (selection = 1) if they do not exist already. For selection = 3,
+#          single_f_v and single_f_h are required.
 # 2. switch for azimuth distribution of the stations (0 = uniform azimuth,
 #    else = irregular azimuth angles)
 # 3. list of the azimuth angles [deg] for all stations given above (if the
@@ -204,6 +207,9 @@
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #     Mxx        Myy        Mzz        Mxy        Myz        Mzx       File
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+#     Fx         Fy         Fz         File
 #------------------------------------------------------------------------------
 1 1 1 1 0 0 0 'exp_north'
 0

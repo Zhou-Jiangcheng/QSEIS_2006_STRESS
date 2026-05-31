@@ -151,8 +151,8 @@ c
       real*8 tstart,twindow,tau,v0
       common /tparas/ tstart,twindow,tau,v0
 c
-      real*8 mtensor(6),azimuth(nrmax)
-      common /eqparas/ mtensor,azimuth
+      real*8 mtensor(6),force(3),azimuth(nrmax)
+      common /eqparas/ mtensor,force,azimuth
 c
       integer*4 nnmax,nn0,iexist,wdeg
       parameter(nnmax=1024)

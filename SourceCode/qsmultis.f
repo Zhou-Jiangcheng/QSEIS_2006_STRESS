@@ -9,7 +9,7 @@ c     an earthquake with arbitrary moment tensor distribution          c
 c                                                                      c
 c     Modified to support Stress, Strain and Rotation synthesis        c
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      integer*4 ir,lf,icmp,istp,unit
+      integer*4 ir,lf,icmp,istp,istp1,istp2,unit
       real*8 az1,az2
       real*8 weight(0:5)
       real*8 t(2*nfmax),y1(nrmax),y2(nrmax)
@@ -18,12 +18,20 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       ! Temporary complex weights for synthesis
       complex*16 w_psv_1, w_psv_2, w_psv_3, w_psv_4
       complex*16 w_sh_2, w_sh_3
+      complex*16 w_psv_fz, w_psv_fh, w_sh_fh
 c
       real*8 deg2rad
       data deg2rad/1.745329251994328d-02/
 c
       if(grnexist)then
-        do istp=1,4
+        if(ssel(7).eq.3)then
+          istp1=5
+          istp2=6
+        else
+          istp1=1
+          istp2=4
+        endif
+        do istp=istp1,istp2
           ! Loop extended to 19 to cover stress/strain/rotation
           do icmp=1,19
             ! Check for SH components (3,7,10,13,16,17,18) which are zero for 
@@ -63,58 +71,90 @@ c
         enddo
       endif
 c
-      weight(0)=(mtensor(1)+mtensor(2)+mtensor(3))/3.d0
-      weight(1)=mtensor(4)
-      weight(2)=mtensor(6)
-      weight(3)=mtensor(3)-weight(0)
-      weight(4)=0.5d0*(mtensor(1)-mtensor(2))
-      weight(5)=mtensor(5)
+      if(ssel(7).eq.3)then
+        do ir=1,nr
+          az1=azimuth(ir)*deg2rad
 c
-      do ir=1,nr
-        az1=azimuth(ir)*deg2rad
-        az2=2.d0*az1
-        
-        ! Pre-calculate weights for P-SV and SH
-        ! P-SV weights
-        w_psv_1 = dcmplx(weight(0), 0.d0)
-        w_psv_2 = dcmplx(weight(1)*dsin(az2)+weight(4)*dcos(az2), 0.d0)
-        w_psv_3 = dcmplx(weight(2)*dcos(az1)+weight(5)*dsin(az1), 0.d0)
-        w_psv_4 = dcmplx(weight(3), 0.d0)
-        
-        ! SH weights
-        w_sh_2  = dcmplx(weight(1)*dcos(az2)-weight(4)*dsin(az2), 0.d0)
-        w_sh_3  = dcmplx(weight(2)*dsin(az1)-weight(5)*dcos(az1), 0.d0)
-
-        do lf=1,nf
-          do icmp=1,19
-            ! === P-SV Type Components ===
-            ! 1:uz, 2:ur, 4:vol
-            ! 5:ezz, 6:ezr, 8:err, 9:ett
-            ! 11:szz, 12:szr, 14:srr, 15:stt
-            ! 19:ot (rotation theta)
-            if (icmp.eq.1.or.icmp.eq.2.or.icmp.eq.4.or. 
-     &          icmp.eq.5.or.icmp.eq.6 .or.icmp.eq.8.or.icmp.eq.9.or.
-     &          icmp.eq.11.or.icmp.eq.12.or.icmp.eq.14.or.icmp.eq.15.or.
-     &          icmp.eq.19) then
-              grns(lf,icmp,ir,7) = grns(lf,icmp,ir,1) * w_psv_1
-     &                           + grns(lf,icmp,ir,2) * w_psv_2
-     &                           + grns(lf,icmp,ir,3) * w_psv_3
-     &                           + grns(lf,icmp,ir,4) * w_psv_4
-            
-            ! === SH Type Components ===
-            ! 3:ut
-            ! 7:ezt, 10:ert
-            ! 13:szt, 16:srt
-            ! 17:oz, 18:or
-            else if (icmp.eq.3 .or. icmp.eq.7 .or. icmp.eq.10 .or.
-     &               icmp.eq.13 .or. icmp.eq.16 .or. 
-     &               icmp.eq.17 .or. icmp.eq.18) then
-              grns(lf,icmp,ir,7) = grns(lf,icmp,ir,2) * w_sh_2
-     &                           + grns(lf,icmp,ir,3) * w_sh_3
-            endif
+c         horizontal force radiation factors:
+c         p-sv: fx*cos(theta)+fy*sin(theta)
+c         sh:   fx*sin(theta)-fy*cos(theta)
+c
+          w_psv_fz=dcmplx(force(3),0.d0)
+          w_psv_fh=dcmplx(force(1)*dcos(az1)
+     &             +force(2)*dsin(az1),0.d0)
+          w_sh_fh=dcmplx(force(1)*dsin(az1)
+     &            -force(2)*dcos(az1),0.d0)
+c
+          do lf=1,nf
+            do icmp=1,19
+              if (icmp.eq.1.or.icmp.eq.2.or.icmp.eq.4.or.
+     &            icmp.eq.5.or.icmp.eq.6.or.icmp.eq.8.or.
+     &            icmp.eq.9.or.icmp.eq.11.or.icmp.eq.12.or.
+     &            icmp.eq.14.or.icmp.eq.15.or.icmp.eq.19) then
+                grns(lf,icmp,ir,7)=grns(lf,icmp,ir,5)*w_psv_fz
+     &                            +grns(lf,icmp,ir,6)*w_psv_fh
+              else if (icmp.eq.3.or.icmp.eq.7.or.icmp.eq.10.or.
+     &                 icmp.eq.13.or.icmp.eq.16.or.
+     &                 icmp.eq.17.or.icmp.eq.18) then
+                grns(lf,icmp,ir,7)=grns(lf,icmp,ir,6)*w_sh_fh
+              endif
+            enddo
           enddo
         enddo
-      enddo
+      else if(ssel(7).eq.1.or.ssel(7).eq.2)then
+        weight(0)=(mtensor(1)+mtensor(2)+mtensor(3))/3.d0
+        weight(1)=mtensor(4)
+        weight(2)=mtensor(6)
+        weight(3)=mtensor(3)-weight(0)
+        weight(4)=0.5d0*(mtensor(1)-mtensor(2))
+        weight(5)=mtensor(5)
+c
+        do ir=1,nr
+          az1=azimuth(ir)*deg2rad
+          az2=2.d0*az1
+        
+          ! Pre-calculate weights for P-SV and SH
+          ! P-SV weights
+          w_psv_1 = dcmplx(weight(0), 0.d0)
+          w_psv_2 = dcmplx(weight(1)*dsin(az2)+weight(4)*dcos(az2), 0.d0)
+          w_psv_3 = dcmplx(weight(2)*dcos(az1)+weight(5)*dsin(az1), 0.d0)
+          w_psv_4 = dcmplx(weight(3), 0.d0)
+        
+          ! SH weights
+          w_sh_2  = dcmplx(weight(1)*dcos(az2)-weight(4)*dsin(az2), 0.d0)
+          w_sh_3  = dcmplx(weight(2)*dsin(az1)-weight(5)*dcos(az1), 0.d0)
+
+          do lf=1,nf
+            do icmp=1,19
+              ! === P-SV Type Components ===
+              ! 1:uz, 2:ur, 4:vol
+              ! 5:ezz, 6:ezr, 8:err, 9:ett
+              ! 11:szz, 12:szr, 14:srr, 15:stt
+              ! 19:ot (rotation theta)
+              if (icmp.eq.1.or.icmp.eq.2.or.icmp.eq.4.or.
+     &            icmp.eq.5.or.icmp.eq.6 .or.icmp.eq.8.or.icmp.eq.9.or.
+     &            icmp.eq.11.or.icmp.eq.12.or.icmp.eq.14.or.icmp.eq.15.or.
+     &            icmp.eq.19) then
+                grns(lf,icmp,ir,7) = grns(lf,icmp,ir,1) * w_psv_1
+     &                             + grns(lf,icmp,ir,2) * w_psv_2
+     &                             + grns(lf,icmp,ir,3) * w_psv_3
+     &                             + grns(lf,icmp,ir,4) * w_psv_4
+            
+              ! === SH Type Components ===
+              ! 3:ut
+              ! 7:ezt, 10:ert
+              ! 13:szt, 16:srt
+              ! 17:oz, 18:or
+              else if (icmp.eq.3 .or. icmp.eq.7 .or. icmp.eq.10 .or.
+     &                 icmp.eq.13 .or. icmp.eq.16 .or.
+     &                 icmp.eq.17 .or. icmp.eq.18) then
+                grns(lf,icmp,ir,7) = grns(lf,icmp,ir,2) * w_sh_2
+     &                             + grns(lf,icmp,ir,3) * w_sh_3
+              endif
+            enddo
+          enddo
+        enddo
+      endif
       
       if(grnexist)then
         do icmp=1,19

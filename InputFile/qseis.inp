@@ -1,4 +1,4 @@
-# This is the input file of FORTRAN77 program "qseis06" for calculation of
+# This is the input file of FORTRAN77 program "qseis2025" for calculation of
 # synthetic seismograms based on a layered halfspace earth model.
 #
 # by
@@ -7,7 +7,7 @@
 # Telegrafenberg, D-14473 Potsdam, Germany
 #
 # Last modified by Zhou Jiangcheng: Bejing, Sep., 2025
-# zhoujcpku@outlook.com
+# zhou-jiangcheng@outlook.com
 #
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # If not specified, SI Unit System is used overall!
